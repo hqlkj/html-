@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	
+	<script type="application/javascript"> 
+		s1=null
+		s2=null
+		speed=3000
+		num=3
+		function test(){
+			clock()
+			imgin()
+		}
+		function clock(){
+			t= parseInt(document.getElementById("time").innerHTML)-1 
+			document.getElementById("time").innerHTML=t
+			if(t==0){
+				clearTimeout(s1)
+				clearTimeout(s2)
+				score=document.getElementById("score").value
+				alert("game over\n您的分数为"+score)
+			}else{
+				s1=setTimeout("clock()",1000)
+			}
+			
+			
+		}
+		function imgin(){
+			list=[]
+			//拿到所有没有图片的td
+			for(n=1;n<=num*num;n++){
+				value=document.getElementById("t"+n).innerHTML
+				if (value==""){
+					list.push(n)
+				}
+			}
+			if(list.length==0){
+				s2=setTimeout("imgin()",speed)
+			}else{
+			index=Math.floor(Math.random()*list.length) 
+			tdid="t"+list[index]
+			
+			document.getElementById(tdid).innerHTML="<img src='img/11.png' />"
+			s2=setTimeout("imgin()",speed)
+			}
+			//从中随机选一个
+			
+		}
+		function imgout(n){
+			if(document.getElementById("t"+n).innerHTML!=""){
+				document.getElementById("t"+n).innerHTML=""
+			//积分板+1
+			document.getElementById("score").value= parseInt(document.getElementById("score").value)+1
+			
+			}
+			
+		}
+		
+		function speedchange(){
+			index=document.getElementById("speeds").selectedIndex
+			value=document.getElementById("speeds").options[index].value
+			speed=value
+		}
+		
+		
+		function numchange(){
+			index=document.getElementById("num").selectedIndex
+			num=document.getElementById("num").options[index].value
+			tdshengcheng()
+		}
+		
+		function tdshengcheng(){
+			str=""
+			n=1
+			for( j=1;j<=num;j++){
+			s=""
+				for (i=1;i<=num;i++){
+					s+="<td id='t"+n+"'  height='82' width='84' onclick='imgout("+n+")' >"
+					n+=1
+				}
+			str+="<tr>"+s+"</tr>"
+			}
+			
+			document.getElementById("tab").innerHTML=str
+		}
+		
+	</script>
+	
+	
+	<body onload="tdshengcheng()" >
+		
+		<font id="time">30</font><br />
+		<input type="button" value="开始" onclick="test()" onmouseup="" setInterval('countDown()',1000)/><br />
+		<input id="score" type="text" value="0" /><br />
+		速度<select id="speeds" onchange="speedchange()">
+			<option value="3000">初级</option>
+			<option value="1000">高级</option>
+			<option value="500">神经病</option>
+		</select>
+		个数<select id="num" onchange="numchange()">
+			<option value="3">初级</option>
+			<option value="4">中级</option>
+			<option value="5">高级</option>
+		</select>
+		
+		<table id="tab" align="center" border="1">
+			
+		</table>
+		
+	</body>
+</html>

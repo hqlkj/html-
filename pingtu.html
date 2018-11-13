@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="application/javascript">
+		flag=false
+		firstimg=null
+		imglist=["img/桃心.jpg","img/梅花.jpg"]
+		imgn=0
+		time=0
+		s=null
+		function clock(){
+			time+=1
+			s=setTimeout("clock()",1000)
+		}
+		
+		function isend(){
+			//按顺序取出所有图片的src,放入列表
+			i=1
+			f=true
+		    nowlist=document.images	
+		    for(var j =1;j<nowlist.length;j++){
+		    	if(nowlist[j].src.charAt(nowlist[j].src.length-5)==i){
+		    		i+=1
+		    	}else{
+		    		f=false
+		    		break
+		    	}
+		    }
+		    if(f==true){
+		    	clearTimeout(s)
+		    	alert("成功!总用时"+time+"秒")
+		    }
+		    
+		  
+			//和正常的图片列表进行比对，如果顺序都是一致的，就结束了
+			
+		}
+		function exchange(img){
+			if (flag==false){
+				firstimg=img
+				flag=true
+			}else{
+				src2=img.src
+				img.src=firstimg.src
+				firstimg.src=src2
+				flag=false
+				
+				isend()
+				
+				
+			}
+		}
+		function imgchange(s){
+			index= s.selectedIndex
+			document.getElementById("i1").src=imglist[index]
+			imgn=index
+		}
+		function start(){
+			clock()
+			//清除现在的图片
+			document.getElementById("i1").src=""
+			//将图片随机打散
+			list=[]
+			name=imglist[imgn]
+			
+			for(var n =0;n<=8;n++){
+				list[n]=name.substring(0,6)+"_0"+(n+1)+".jpg"
+			}
+			nomallist=list
+			
+			i=1
+			while (list.length!=0){
+				 rindex=Math.floor(list.length*Math.random()) 
+				 document.getElementById("img"+i).src=list[rindex]
+				 list.splice(rindex,1)
+				 i+=1	 
+			}
+		}
+		
+	</script>
+	<body>
+		<select onchange="imgchange(this)">
+			<option >图片1</option>
+			<option >图片2</option>
+		</select>
+		<input type="button" value="开始" onclick="start()" />
+		<img id="i1" src="img/桃心.jpg">
+		<table id="puzzle" >
+			<tr>
+				<td><img id="img1" onclick="exchange(this)"></td>
+				<td><img id="img2" onclick="exchange(this)"></td>
+				<td><img id="img3" onclick="exchange(this)"></td>
+			</tr>
+			<tr>
+				<td><img id="img4" onclick="exchange(this)"></td>
+				<td><img id="img5" onclick="exchange(this)"></td>
+				<td><img id="img6" onclick="exchange(this)"></td>
+			</tr>
+			<tr>
+				<td><img id="img7" onclick="exchange(this)"></td>
+				<td><img id="img8" onclick="exchange(this)"></td>
+				<td><img id="img9" onclick="exchange(this)"></td>
+			</tr>
+			
+		</table>
+
+		
+	</body>
+</html>
